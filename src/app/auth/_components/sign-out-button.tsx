@@ -3,11 +3,12 @@
 import { Button, ButtonProps } from "@/components/ui/button";
 import { signOut } from "../_actions/sign-out";
 
-interface SignOutButtonProps extends ButtonProps {}
-export const SignOutButton = ({ children, ...props }: SignOutButtonProps) => {
+export const SignOutButton = ({ children, ...props }: ButtonProps) => {
   return (
-    <Button {...props} onClick={signOut}>
-      {children}
-    </Button>
+    <form action="/auth/signout" method="post">
+      <Button {...props} onClick={signOut} type="submit">
+        {children}
+      </Button>
+    </form>
   );
 };
