@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/supabase/server";
 import { redirect } from "next/navigation";
 
 export const signIn = async (formData: FormData) => {

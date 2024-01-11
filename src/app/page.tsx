@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SignOutButton } from "./auth/_components/sign-out-button";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         </TabsContent>
         <TabsContent value="password">Change your password here.</TabsContent>
       </Tabs>
+      <SignOutButton variant="destructive">Sign Out</SignOutButton>
     </main>
   );
 }
