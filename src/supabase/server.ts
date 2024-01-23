@@ -19,6 +19,6 @@ export const createSupabaseServerClient = () => {
           cookieStore.set({ name, value: "", ...options });
         },
       },
-    }
+    },
   );
 };
