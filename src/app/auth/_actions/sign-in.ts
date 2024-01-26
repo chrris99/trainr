@@ -11,12 +11,12 @@ export const signIn = async (formData: FormData) => {
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
-    password,
+    password
   });
 
   if (error) {
-    return redirect("/login?message=Could not authenticate user");
+    return redirect("/auth/signin?message=Could not authenticate user");
   }
 
-  return redirect("/");
+  return redirect("/home");
 };
