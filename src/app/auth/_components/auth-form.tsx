@@ -11,7 +11,7 @@ interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {
   action: (data: FormData) => Promise<void>;
 }
 
-export const UserAuthForm = ({
+export const AuthForm = ({
   action,
   className,
   ...props

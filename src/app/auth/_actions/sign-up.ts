@@ -15,12 +15,12 @@ export const signUp = async (formData: FormData) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/confirm`,
-    },
+      emailRedirectTo: `${origin}/auth/confirm`
+    }
   });
 
   if (error) {
-    return redirect("/login?message=Could not authenticate user");
+    return redirect("/auth/signup?message=Could not authenticate user");
   }
 
   return redirect("/login?message=Check email to continue sign in process");
