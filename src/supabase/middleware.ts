@@ -1,14 +1,15 @@
+import { Database } from "@/database.types";
 import { CookieOptions, createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
 export const createSupabaseMiddlewareClient = ({
   req,
-  res,
+  res
 }: {
   req: NextRequest;
   res: NextResponse;
 }) =>
-  createServerClient(
+  createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -20,36 +21,36 @@ export const createSupabaseMiddlewareClient = ({
           req.cookies.set({
             name,
             value,
-            ...options,
+            ...options
           });
           res = NextResponse.next({
             request: {
-              headers: req.headers,
-            },
+              headers: req.headers
+            }
           });
           res.cookies.set({
             name,
             value,
-            ...options,
+            ...options
           });
         },
         remove(name: string, options: CookieOptions) {
           req.cookies.set({
             name,
             value: "",
-            ...options,
+            ...options
           });
           res = NextResponse.next({
             request: {
-              headers: req.headers,
-            },
+              headers: req.headers
+            }
           });
           res.cookies.set({
             name,
             value: "",
-            ...options,
+            ...options
           });
-        },
-      },
-    },
+        }
+      }
+    }
   );
