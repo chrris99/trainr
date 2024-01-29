@@ -1,10 +1,11 @@
+import { Database } from "@/database.types";
 import { CookieOptions, createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const createSupabaseServerClient = () => {
   const cookieStore = cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -17,8 +18,8 @@ export const createSupabaseServerClient = () => {
         },
         remove(name: string, options: CookieOptions) {
           cookieStore.set({ name, value: "", ...options });
-        },
-      },
-    },
+        }
+      }
+    }
   );
 };
