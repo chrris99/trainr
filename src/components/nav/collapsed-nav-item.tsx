@@ -13,7 +13,7 @@ export const CollapsedNavItem = ({ item }: NavItemProps) => {
     <Tooltip delayDuration={0}>
       <TooltipTrigger asChild>
         <Link
-          href="#"
+          href={item.href}
           className={cn(
             buttonVariants({ variant: item.variant, size: "icon" }),
             "h-9 w-9",

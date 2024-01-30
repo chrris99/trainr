@@ -16,6 +16,9 @@ export async function middleware(req: NextRequest) {
 
   // If the user is authenticated, continue as normal
   if (user) {
+    if (!req.nextUrl.pathname.startsWith("/home"))
+      return NextResponse.redirect(new URL("/home", req.url));
+
     return NextResponse.next();
   }
 
