@@ -1,17 +1,7 @@
 "use client";
 
 import { Nav } from "@/components/nav/nav";
-import {
-  Archive,
-  ArchiveX,
-  Dumbbell,
-  File,
-  Inbox,
-  Send,
-  Trash2,
-  Trophy,
-  User
-} from "lucide-react";
+import { Archive, Dumbbell, Send, Trophy, User } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   ResizableHandle,

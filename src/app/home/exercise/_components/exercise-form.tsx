@@ -25,6 +25,14 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { revalidatePath } from "next/cache";
+import { useState } from "react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -36,6 +44,7 @@ const formSchema = z.object({
 
 export const ExerciseForm = () => {
   const supabase = createSupabaseClient();
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +55,7 @@ export const ExerciseForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const { data: exerciseData, error } = await supabase
+    const { data: exercise, error } = await supabase
       .from("exercise")
       .insert([
         {
@@ -55,9 +64,9 @@ export const ExerciseForm = () => {
           primary_muscle: data.primaryMuscle
         }
       ])
-      .select();
+      .select()
+      .single();
 
-    console.log(exerciseData);
     if (error) {
       console.error(error);
       toast("Error while creating exercise", {
@@ -69,9 +78,9 @@ export const ExerciseForm = () => {
       });
     }
 
-    if (exerciseData) {
+    if (exercise) {
       toast("Exercise has been successfully created", {
-        description: `Created ${exerciseData[0].name}`,
+        description: `Created ${exercise.name}`,
         action: {
           label: "Close",
           onClick: () => console.log("Close")
@@ -79,61 +88,85 @@ export const ExerciseForm = () => {
       });
     }
 
-    revalidatePath("/home/exercise");
+    redirect("/home/exercise");
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Bench press" {...field} />
-              </FormControl>
-              <FormDescription>Exercise name</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormDescription>Exercise description</FormDescription>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="primaryMuscle"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Primary Muscle</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <div className="p-4">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a muscle group" />
-                  </SelectTrigger>
+                  <Input placeholder="Bench press" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="Chest">Chest</SelectItem>
-                  <SelectItem value="Biceps">Biceps</SelectItem>
-                </SelectContent>
-              </Select>
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+                <FormMessage />
+                <FormDescription className="sr-only">
+                  Exercise name
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea {...field} rows={5} maxLength={1000} />
+                </FormControl>
+                <FormDescription className="sr-only">
+                  Exercise description
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="primaryMuscle"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Primary Muscle</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a muscle group" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Chest">Chest</SelectItem>
+                    <SelectItem value="Biceps">Biceps</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
+          />
+          <Collapsible open={isAdvancedOpen} onOpenChange={setIsAdvancedOpen}>
+            <div className="flex items-center justify-between space-x-4 px-4">
+              <h4 className="text-sm font-semibold">Advanced options</h4>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <ChevronDown className="h-4 w-4" />
+                  <span className="sr-only">Toggle advanced options</span>
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            <CollapsibleContent className="space-y-2">
+              <div>Hello</div>
+              <div>Hello</div>
+            </CollapsibleContent>
+          </Collapsible>
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </div>
   );
 };
