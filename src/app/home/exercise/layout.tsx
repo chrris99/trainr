@@ -12,7 +12,7 @@ export default function ExercisePageLayout({
       direction="horizontal"
       className="h-full items-stretch"
     >
-      <ResizablePanel minSize={15} className="p-4">
+      <ResizablePanel minSize={30} order={1}>
         {children}
       </ResizablePanel>
       {form}

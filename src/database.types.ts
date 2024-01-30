@@ -49,7 +49,7 @@ export interface Database {
           created_by?: string;
           description?: string | null;
           force_type?: string | null;
-          id: string;
+          id?: string | null;
           instructions?: string[] | null;
           is_deleted?: boolean;
           name?: string;

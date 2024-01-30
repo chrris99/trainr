@@ -14,9 +14,15 @@ export async function middleware(req: NextRequest) {
     data: { user }
   } = await supabase.auth.getUser();
 
-  return res;
+  // If the user is authenticated, continue as normal
+  if (user) {
+    return NextResponse.next();
+  }
+
+  // Redirect to login page if not authenticated
+  return NextResponse.redirect(new URL("/auth/signin", req.url));
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"]
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|auth).*)"]
 };
