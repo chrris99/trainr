@@ -1,18 +1,19 @@
 import { CollapsedNavItem } from "./collapsed-nav-item";
 import { NavItem } from "./nav-item";
 
-interface NavProps {
+type NavProps = {
   isCollapsed: boolean;
   items: NavItem[];
-}
+  footer?: NavItem;
+};
 
-export const Nav = ({ isCollapsed, items }: NavProps) => {
+export const Nav = ({ isCollapsed, items, footer }: NavProps) => {
   return (
-    <div
+    <nav
       data-collapsed={isCollapsed}
-      className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+      className="group flex flex-col gap-4 p-2 data-[collapsed=true]:py-2 h-full justify-between"
     >
-      <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+      <div className="grid gap-1 group-[[data-collapsed=true]]:justify-center">
         {items.map((item, index) =>
           isCollapsed ? (
             <CollapsedNavItem key={index} item={item} />
@@ -20,7 +21,9 @@ export const Nav = ({ isCollapsed, items }: NavProps) => {
             <NavItem key={index} item={item} />
           )
         )}
-      </nav>
-    </div>
+      </div>
+      {footer && isCollapsed && <CollapsedNavItem item={footer} />}
+      {footer && !isCollapsed && <NavItem item={footer} />}
+    </nav>
   );
 };

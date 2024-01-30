@@ -1,7 +1,7 @@
 "use client";
 
 import { Nav } from "@/components/nav/nav";
-import { Archive, Dumbbell, Send, Trophy, User } from "lucide-react";
+import { Archive, Dumbbell, LogOut, Send, Trophy, User } from "lucide-react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   ResizableHandle,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/resizable";
 import { useState } from "react";
 import { cn } from "@/utils";
+import { SignOutButton } from "../auth/_components/sign-out-button";
 
 export default function HomeLayout({
   children
@@ -81,6 +82,12 @@ export default function HomeLayout({
                 variant: "ghost"
               }
             ]}
+            footer={{
+              title: "Sign out",
+              href: "/auth/signout",
+              icon: LogOut,
+              variant: "ghost"
+            }}
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
